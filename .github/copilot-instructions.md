@@ -29,6 +29,7 @@ TaskTrack is a student task management web application for organizing and tracki
 User identity and authentication are managed by Clerk.
 
 Relevant information may include:
+
 - `clerkUserId`
 - `displayName`
 - `createdAt`
@@ -39,6 +40,7 @@ Relevant information may include:
 Tasks are stored in MongoDB.
 
 Each task contains:
+
 - `_id`
 - `userId`
 - `title`
@@ -73,6 +75,7 @@ Task API endpoints follow this structure:
 - `DELETE /api/tasks/[taskId]`
 
 API Route Handlers must:
+
 - Verify authentication.
 - Validate input.
 - Restrict data access to the authenticated user.
@@ -82,18 +85,18 @@ API Route Handlers must:
 ## API & Technical Requirements
 
 - Implement the profile endpoints:
-    - `GET /api/auth/session`
-    - `GET /api/users/me`
-    - `PATCH /api/users/me`
+  - `GET /api/auth/session`
+  - `GET /api/users/me`
+  - `PATCH /api/users/me`
 - At least one Next.js API Route Handler must perform a database operation and be consumed by a Client Component.
 - Use at least five reusable components across multiple pages.
 - Authentication screens must use Clerk's sign-up and sign-in functionality.
 - The application must be deployable to Vercel or a similar hosting platform.
 - Profile updates must validate input and provide clear validation and error feedback.
-- Follow the implementation priorities in `specs.md`:
-    - P1: Authentication, session protection, and profile management
-    - P2: Task CRUD, completion, and reopening
-    - P3: Dashboard, filtering, task counts, responsive design, and due-date ordering.
+- Follow the implementation priorities in `spec.md`:
+  - P1: Authentication, session protection, and profile management
+  - P2: Task CRUD, completion, and reopening
+  - P3: Dashboard, filtering, task counts, responsive design, and due-date ordering.
 
 ### Client/API Architecture
 
@@ -108,6 +111,7 @@ Prefer reusable components instead of duplicating UI.
 The application must use at least five reusable components across multiple pages.
 
 Important shared components include:
+
 - `Header`
 - `TaskCard`
 - `TaskForm`
@@ -123,6 +127,7 @@ Use Server Components by default for pages and components that do not require cl
 Use Client Components only when client-side state, event handlers, browser APIs, or interactive behavior is required.
 
 Interactive functionality that should use Client Components includes:
+
 - Task creation forms
 - Task editing forms
 - Completing and reopening tasks
@@ -155,6 +160,7 @@ Recommended structure:
 - `api` — Next.js API Route Handlers
 
 Use these application routes:
+
 - `/`
 - `/sign-in`
 - `/sign-up`
@@ -165,6 +171,7 @@ Use these application routes:
 - `/profile`
 
 Use these API routes:
+
 - `/api/auth/session`
 - `/api/users/me`
 - `/api/tasks`
@@ -213,21 +220,27 @@ Use Tailwind CSS consistently throughout the application.
 
 ### Color Palette
 
-- Primary: Blue
-- Primary Hover: Dark Blue
-- Background: Light Gray
-- Cards/Surfaces: White
-- Text: Dark Gray
-- Secondary Text: Gray
-- Completed/Success: Green
-- Error: Red
-- Upcoming/Warning: Amber
+Use these Tailwind classes so colors stay consistent across components:
+
+| Role                | Tailwind class                    | Use                                       |
+| ------------------- | --------------------------------- | ----------------------------------------- |
+| Primary             | `bg-blue-600` / `text-blue-600`   | Primary buttons, links, active navigation |
+| Primary hover       | `hover:bg-blue-700`               | Hover state for primary buttons           |
+| Background          | `bg-gray-50`                      | Page background                           |
+| Cards / surfaces    | `bg-white` with `border-gray-200` | Cards, forms, panels                      |
+| Text                | `text-gray-900`                   | Headings and body text                    |
+| Secondary text      | `text-gray-600`                   | Dates, helper text, labels                |
+| Completed / success | `text-green-700` on `bg-green-50` | Completed status badges                   |
+| Error               | `text-red-700` on `bg-red-50`     | Validation errors, delete actions         |
+| Upcoming / warning  | `text-amber-800` on `bg-amber-50` | Due-soon and overdue indicators           |
+
+Do not use lighter text shades (such as `text-gray-400`) for readable content. Text must meet WCAG AA contrast (4.5:1).
 
 ### Typography
 
-- Use a clean sans-serif font such as Roboto.
-- Maintain a consistent type scale.
-- Use stronger font weights for headings.
+- Use Geist Sans for all UI text and Geist Mono for dates and counts. Both are loaded with `next/font` in `app/layout.tsx` and exposed as `font-sans` and `font-mono`.
+- Type scale: page title `text-3xl font-bold`, section heading `text-xl font-semibold`, card title `text-lg font-semibold`, body `text-base`, helper text `text-sm`.
+- Each page has exactly one `h1`. The site name in the header is not a heading.
 - Prioritize readability on desktop and mobile.
 
 ### Layout
@@ -237,6 +250,17 @@ Use Tailwind CSS consistently throughout the application.
 - Use reusable card, form, button, and status styles.
 - Support desktop and mobile layouts.
 - Avoid horizontal scrolling on mobile.
+- Page container: `mx-auto w-full max-w-5xl px-4 sm:px-6 py-8`.
+- Cards: `rounded-lg border border-gray-200 bg-white p-5 shadow-sm`.
+- Use the Tailwind spacing scale only. Avoid arbitrary pixel values.
+- Flex rows that hold several items must wrap (`flex-wrap`) so they never force horizontal scrolling.
+- Interactive elements must show a visible focus ring (`focus-visible:ring-2 focus-visible:ring-blue-600`).
+
+## Folder Conventions
+
+- `app/` contains routes only. Pages stay thin and delegate to components and `lib/`.
+- `components/` contains shared UI components, one component per file, named in PascalCase.
+- `lib/` contains shared types, validation, and server-side data access. Client Components must not import server-only modules from `lib/`.
 
 ## Code Quality
 

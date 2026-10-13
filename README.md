@@ -1,47 +1,56 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# TaskTrack
 
-## Getting Started
+TaskTrack is a simple task management web application for students who want to keep track of their schoolwork in one place. Users can create an account and manage their tasks by adding, editing, completing, and deleting them. A simple dashboard shows users what tasks they have coming up and which tasks they have completed.
 
-First, run the development server:
+## Team
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+**Team Leader:** Boluwatife Alewi
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+This repository is maintained individually by Boluwatife Alewi with instructor approval. It is a fork of the original team repository, [schoolonlyaccount/wdd430-team-project](https://github.com/schoolonlyaccount/wdd430-team-project).
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
-
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
-
-## Learn More
-
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
-
-## Team Members
+Original team members:
 
 - Michael Kyne
 - Armando Fernandez
 - Boluwatife Alewi
 - Ifeanyi Eme
 
-## Project Description
+## Project Links
 
-TaskTrack is a simple task management web application for students who want to keep track of their schoolwork in one place. Users can create an account and manage their tasks by adding, editing, completing, and deleting them. A simple dashboard shows users what tasks they have coming up and which tasks they have completed.
+- **Project board:** https://github.com/users/T-FEH/projects/1
+- **Specification:** [spec.md](spec.md)
+- **Copilot instructions:** [.github/copilot-instructions.md](.github/copilot-instructions.md)
+
+## Tech Stack
+
+- Next.js (App Router) with TypeScript in strict mode
+- Tailwind CSS
+- MongoDB for task data
+- Clerk for authentication and profile management
+- ESLint and Prettier for code quality
+
+## Getting Started
+
+```bash
+git clone https://github.com/T-FEH/wdd430-team-project.git
+cd wdd430-team-project
+npm install
+npm run dev
+```
+
+Then open [http://localhost:3000](http://localhost:3000).
+
+## Scripts
+
+| Command                | What it does                             |
+| ---------------------- | ---------------------------------------- |
+| `npm run dev`          | Start the development server             |
+| `npm run build`        | Create a production build                |
+| `npm run start`        | Serve the production build               |
+| `npm run lint`         | Run ESLint                               |
+| `npm run format`       | Format all files with Prettier           |
+| `npm run format:check` | Check formatting without writing changes |
+
+## Workflow
+
+All work happens on feature branches and goes through a pull request into `main`. Each pull request references the issue it closes.
