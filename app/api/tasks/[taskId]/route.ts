@@ -1,6 +1,6 @@
 import { NextResponse, type NextRequest } from 'next/server';
 import { getCurrentUserId } from '@/lib/auth';
-import { jsonError, parseJsonBody } from '@/lib/http';
+import { jsonError, parseJsonBody, unauthorized } from '@/lib/http';
 import { deleteTask, getTask, updateTask } from '@/lib/tasks/store';
 import { validateTaskUpdate } from '@/lib/tasks/validation';
 
@@ -10,6 +10,7 @@ const NOT_FOUND_MESSAGE = 'Task not found.';
 export async function GET(_request: NextRequest, context: RouteContext<'/api/tasks/[taskId]'>) {
   const { taskId } = await context.params;
   const userId = await getCurrentUserId();
+  if (!userId) return unauthorized();
 
   const task = await getTask(userId, taskId);
   if (!task) return jsonError(NOT_FOUND_MESSAGE, 404);
@@ -21,6 +22,7 @@ export async function GET(_request: NextRequest, context: RouteContext<'/api/tas
 export async function PATCH(request: NextRequest, context: RouteContext<'/api/tasks/[taskId]'>) {
   const { taskId } = await context.params;
   const userId = await getCurrentUserId();
+  if (!userId) return unauthorized();
   const body = await parseJsonBody(request);
 
   if (!body.ok) {
@@ -42,6 +44,7 @@ export async function PATCH(request: NextRequest, context: RouteContext<'/api/ta
 export async function DELETE(_request: NextRequest, context: RouteContext<'/api/tasks/[taskId]'>) {
   const { taskId } = await context.params;
   const userId = await getCurrentUserId();
+  if (!userId) return unauthorized();
 
   const deleted = await deleteTask(userId, taskId);
   if (!deleted) return jsonError(NOT_FOUND_MESSAGE, 404);

@@ -1,3 +1,4 @@
+import { Show, UserButton } from '@clerk/nextjs';
 import Link from 'next/link';
 import NavLinks from '@/components/NavLinks';
 import { buttonStyles, focusRing } from '@/lib/ui';
@@ -10,11 +11,27 @@ export default function Header() {
           Task<span className="text-blue-600">Track</span>
         </Link>
 
-        <NavLinks />
-
-        <Link href="/tasks/new" className={buttonStyles.primary}>
-          New task
-        </Link>
+        <Show
+          when="signed-in"
+          fallback={
+            <div className="flex flex-wrap gap-2">
+              <Link href="/sign-in" className={buttonStyles.secondary}>
+                Sign in
+              </Link>
+              <Link href="/sign-up" className={buttonStyles.primary}>
+                Get started
+              </Link>
+            </div>
+          }
+        >
+          <NavLinks />
+          <div className="flex items-center gap-3">
+            <Link href="/tasks/new" className={buttonStyles.primary}>
+              New task
+            </Link>
+            <UserButton />
+          </div>
+        </Show>
       </div>
     </header>
   );

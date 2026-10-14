@@ -1,32 +1,37 @@
 import 'server-only';
-import { connection } from 'next/server';
+import { auth, currentUser } from '@clerk/nextjs/server';
 
 export interface CurrentUser {
   id: string;
   displayName: string;
-  email: string;
+  email: string | null;
+}
+
+/** The signed-in user's Clerk ID, or null when nobody is signed in. Use in API routes. */
+export async function getCurrentUserId(): Promise<string | null> {
+  const { userId } = await auth();
+  return userId;
 }
 
 /**
- * Temporary stand-in for the signed-in user until Clerk is connected (#1).
- * Every task query is already scoped to this ID, so switching to Clerk only
- * means replacing the body of getCurrentUser().
+ * The signed-in user's Clerk ID for protected pages. proxy.ts already sends
+ * signed-out visitors to /sign-in, so the redirect here is a second line of defense.
  */
-const DEMO_USER: CurrentUser = {
-  id: 'demo-student',
-  displayName: 'Demo Student',
-  email: 'demo.student@example.com',
-};
-
-export async function getCurrentUser(): Promise<CurrentUser> {
-  // Clerk's auth() reads request headers, which makes any page that calls it
-  // render per request. connection() does the same here so task pages are
-  // never served from a stale build-time render.
-  await connection();
-  return DEMO_USER;
+export async function requireUserId(): Promise<string> {
+  const { userId, redirectToSignIn } = await auth();
+  if (!userId) return redirectToSignIn();
+  return userId;
 }
 
-export async function getCurrentUserId(): Promise<string> {
-  const user = await getCurrentUser();
-  return user.id;
+/** Basic profile details for the signed-in user, or null when nobody is signed in. */
+export async function getCurrentUser(): Promise<CurrentUser | null> {
+  const user = await currentUser();
+  if (!user) return null;
+
+  const email = user.primaryEmailAddress?.emailAddress ?? null;
+  return {
+    id: user.id,
+    displayName: user.fullName ?? user.username ?? email ?? 'TaskTrack user',
+    email,
+  };
 }

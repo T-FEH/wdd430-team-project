@@ -4,19 +4,22 @@ import EmptyState from '@/components/EmptyState';
 import PageHeader from '@/components/PageHeader';
 import StatCard from '@/components/StatCard';
 import TaskList from '@/components/TaskList';
-import { getCurrentUserId } from '@/lib/auth';
+import { requireUserId } from '@/lib/auth';
+import { pageMetadata } from '@/lib/metadata';
 import { toDateKey } from '@/lib/tasks/dates';
 import { listTasks } from '@/lib/tasks/store';
 import { linkStyles } from '@/lib/ui';
 
-export const metadata: Metadata = {
+export const metadata: Metadata = pageMetadata({
   title: 'Dashboard',
-};
+  description: 'See your upcoming deadlines, overdue work, and recently completed tasks.',
+  path: '/dashboard',
+});
 
 const RECENTLY_COMPLETED_LIMIT = 5;
 
 export default async function DashboardPage() {
-  const userId = await getCurrentUserId();
+  const userId = await requireUserId();
   const [activeTasks, completedTasks] = await Promise.all([
     listTasks(userId, 'active'),
     listTasks(userId, 'completed'),

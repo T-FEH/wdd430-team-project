@@ -1,6 +1,6 @@
 import { NextResponse, type NextRequest } from 'next/server';
 import { getCurrentUserId } from '@/lib/auth';
-import { jsonError, parseJsonBody } from '@/lib/http';
+import { jsonError, parseJsonBody, unauthorized } from '@/lib/http';
 import { createTask, listTasks } from '@/lib/tasks/store';
 import { isTaskFilter } from '@/lib/tasks/types';
 import { validateTaskInput } from '@/lib/tasks/validation';
@@ -8,6 +8,8 @@ import { validateTaskInput } from '@/lib/tasks/validation';
 /** GET /api/tasks?status=all|active|completed */
 export async function GET(request: NextRequest) {
   const userId = await getCurrentUserId();
+  if (!userId) return unauthorized();
+
   const status = request.nextUrl.searchParams.get('status') ?? 'all';
 
   if (!isTaskFilter(status)) {
@@ -21,6 +23,8 @@ export async function GET(request: NextRequest) {
 /** POST /api/tasks */
 export async function POST(request: NextRequest) {
   const userId = await getCurrentUserId();
+  if (!userId) return unauthorized();
+
   const body = await parseJsonBody(request);
 
   if (!body.ok) {

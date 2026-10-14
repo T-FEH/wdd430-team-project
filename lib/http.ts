@@ -8,6 +8,10 @@ export function jsonError(message: string, status: number, fieldErrors?: FieldEr
   });
 }
 
+export function unauthorized() {
+  return jsonError('You must be signed in.', 401);
+}
+
 export type ParsedBody = { ok: true; data: unknown } | { ok: false };
 
 /** Reads a JSON request body without throwing on malformed input. */

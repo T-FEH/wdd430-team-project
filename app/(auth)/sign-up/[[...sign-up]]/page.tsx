@@ -1,21 +1,14 @@
+import { SignUp } from '@clerk/nextjs';
 import type { Metadata } from 'next';
-import Link from 'next/link';
-import { buttonStyles, cardStyles } from '@/lib/ui';
+import { pageMetadata } from '@/lib/metadata';
 
-export const metadata: Metadata = {
+export const metadata: Metadata = pageMetadata({
   title: 'Create an account',
-};
+  description: 'Create a free TaskTrack account to keep all of your schoolwork in one place.',
+  path: '/sign-up',
+});
 
 export default function SignUpPage() {
-  return (
-    <section className={cardStyles}>
-      <h1 className="text-2xl font-bold text-gray-900">Create an account</h1>
-      <p className="mt-2 text-gray-600">
-        Account creation is coming soon. Until then you can explore TaskTrack with a demo account.
-      </p>
-      <Link href="/dashboard" className={`${buttonStyles.primary} mt-6`}>
-        Continue to the dashboard
-      </Link>
-    </section>
-  );
+  // Clerk renders the heading (an h1) inside the card, set via localization in app/layout.tsx.
+  return <SignUp />;
 }

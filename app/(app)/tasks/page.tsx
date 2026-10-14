@@ -3,14 +3,17 @@ import EmptyState from '@/components/EmptyState';
 import FilterBar from '@/components/FilterBar';
 import PageHeader from '@/components/PageHeader';
 import TaskList from '@/components/TaskList';
-import { getCurrentUserId } from '@/lib/auth';
+import { requireUserId } from '@/lib/auth';
+import { pageMetadata } from '@/lib/metadata';
 import { toDateKey } from '@/lib/tasks/dates';
 import { getTaskCounts, listTasks } from '@/lib/tasks/store';
 import { isTaskFilter, type TaskFilter } from '@/lib/tasks/types';
 
-export const metadata: Metadata = {
+export const metadata: Metadata = pageMetadata({
   title: 'Tasks',
-};
+  description: 'Create, edit, complete, and filter your schoolwork tasks.',
+  path: '/tasks',
+});
 
 const emptyStates: Record<TaskFilter, { title: string; message: string }> = {
   all: {
@@ -38,7 +41,7 @@ export default async function TasksPage({ searchParams }: PageProps<'/tasks'>) {
   // Unknown or missing values fall back to showing everything.
   const filter: TaskFilter = isTaskFilter(status) ? status : 'all';
 
-  const userId = await getCurrentUserId();
+  const userId = await requireUserId();
   const [tasks, counts] = await Promise.all([listTasks(userId, filter), getTaskCounts(userId)]);
   const today = toDateKey(new Date());
 

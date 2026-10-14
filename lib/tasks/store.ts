@@ -1,13 +1,13 @@
 import 'server-only';
-import { addDays, compareByDueDate, toDateKey } from './dates';
+import { compareByDueDate } from './dates';
 import type { Task, TaskCounts, TaskFilter, TaskInput, TaskUpdate } from './types';
 
 /*
  * In-memory task store used until MongoDB is connected (#2, #4).
  *
- * Every function is async and takes the owner's userId, matching the shape the
- * MongoDB implementation will have, so pages and API routes will not change
- * when the storage layer is swapped. Data resets whenever the server restarts.
+ * Every function is async and takes the owner's Clerk user ID, matching the
+ * shape the MongoDB implementation will have, so pages and API routes will not
+ * change when the storage layer is swapped. Data resets whenever the server restarts.
  */
 
 type StoreGlobal = typeof globalThis & { __tasktrackTasks?: Map<string, Task> };
@@ -16,72 +16,8 @@ type StoreGlobal = typeof globalThis & { __tasktrackTasks?: Map<string, Task> };
 const storeGlobal = globalThis as StoreGlobal;
 
 function getTaskMap(): Map<string, Task> {
-  if (!storeGlobal.__tasktrackTasks) {
-    storeGlobal.__tasktrackTasks = new Map(
-      seedTasks('demo-student').map((task) => [task._id, task]),
-    );
-  }
+  storeGlobal.__tasktrackTasks ??= new Map();
   return storeGlobal.__tasktrackTasks;
-}
-
-function seedTasks(userId: string): Task[] {
-  const today = toDateKey(new Date());
-  const seeds: Array<Pick<Task, 'title' | 'details' | 'dueDate' | 'status'>> = [
-    {
-      title: 'Finish WDD 430 Week 05 reading',
-      details: 'Server actions and caching chapters, plus the learning activity quiz.',
-      dueDate: addDays(today, 1),
-      status: 'active',
-    },
-    {
-      title: 'Peer review a Sacrament Meeting Planner pull request',
-      details: 'Leave line comments as a single grouped review and post deployment notes.',
-      dueDate: addDays(today, 3),
-      status: 'active',
-    },
-    {
-      title: 'Statistics problem set 4',
-      details: 'Questions 1 through 12 on confidence intervals.',
-      dueDate: addDays(today, -1),
-      status: 'active',
-    },
-    {
-      title: 'Draft history essay outline',
-      details: '',
-      dueDate: addDays(today, 8),
-      status: 'active',
-    },
-    {
-      title: 'Plan a study group for midterms',
-      details: 'Find a time that works for everyone and book a library room.',
-      dueDate: null,
-      status: 'active',
-    },
-    {
-      title: 'Submit Week 04 team report',
-      details: '',
-      dueDate: addDays(today, -3),
-      status: 'completed',
-    },
-    {
-      title: 'Set up the TaskTrack development environment',
-      details: 'Clone the repository, install dependencies, and run the dev server.',
-      dueDate: addDays(today, -6),
-      status: 'completed',
-    },
-  ];
-
-  const start = Date.now() - seeds.length * 60_000;
-  return seeds.map((seed, index) => {
-    const timestamp = new Date(start + index * 60_000).toISOString();
-    return {
-      ...seed,
-      _id: crypto.randomUUID(),
-      userId,
-      createdAt: timestamp,
-      updatedAt: timestamp,
-    };
-  });
 }
 
 function sortTasks(tasks: Task[]): Task[] {

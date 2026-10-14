@@ -3,16 +3,24 @@ import { notFound } from 'next/navigation';
 import DeleteTaskButton from '@/components/DeleteTaskButton';
 import PageHeader from '@/components/PageHeader';
 import TaskForm from '@/components/TaskForm';
-import { getCurrentUserId } from '@/lib/auth';
+import { requireUserId } from '@/lib/auth';
+import { pageMetadata } from '@/lib/metadata';
 import { getTask } from '@/lib/tasks/store';
 
-export const metadata: Metadata = {
-  title: 'Edit task',
-};
+export async function generateMetadata({
+  params,
+}: PageProps<'/tasks/[taskId]/edit'>): Promise<Metadata> {
+  const { taskId } = await params;
+  return pageMetadata({
+    title: 'Edit task',
+    description: 'Update the details or deadline for a task, or delete it.',
+    path: `/tasks/${taskId}/edit`,
+  });
+}
 
 export default async function EditTaskPage({ params }: PageProps<'/tasks/[taskId]/edit'>) {
   const { taskId } = await params;
-  const userId = await getCurrentUserId();
+  const userId = await requireUserId();
 
   const task = await getTask(userId, taskId);
   if (!task) notFound();

@@ -1,5 +1,15 @@
+import { Show } from '@clerk/nextjs';
+import type { Metadata } from 'next';
 import Link from 'next/link';
+import { SITE_DESCRIPTION, pageMetadata } from '@/lib/metadata';
 import { buttonStyles, cardStyles } from '@/lib/ui';
+
+export const metadata: Metadata = pageMetadata({
+  title: 'TaskTrack: keep your schoolwork on track',
+  description: SITE_DESCRIPTION,
+  path: '/',
+  absoluteTitle: true,
+});
 
 const features = [
   {
@@ -28,12 +38,26 @@ export default function HomePage() {
           is coming up, and check it off when it is done.
         </p>
         <div className="mt-8 flex flex-wrap gap-3">
-          <Link href="/dashboard" className={buttonStyles.primary}>
-            Open your dashboard
-          </Link>
-          <Link href="/tasks/new" className={buttonStyles.secondary}>
-            Add a task
-          </Link>
+          <Show
+            when="signed-in"
+            fallback={
+              <>
+                <Link href="/sign-up" className={buttonStyles.primary}>
+                  Create a free account
+                </Link>
+                <Link href="/sign-in" className={buttonStyles.secondary}>
+                  Sign in
+                </Link>
+              </>
+            }
+          >
+            <Link href="/dashboard" className={buttonStyles.primary}>
+              Open your dashboard
+            </Link>
+            <Link href="/tasks/new" className={buttonStyles.secondary}>
+              Add a task
+            </Link>
+          </Show>
         </div>
       </section>
 

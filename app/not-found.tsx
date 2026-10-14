@@ -1,4 +1,11 @@
+import type { Metadata } from 'next';
 import EmptyState from '@/components/EmptyState';
+
+export const metadata: Metadata = {
+  title: 'Page not found',
+  description: 'The page you are looking for does not exist.',
+  robots: { index: false },
+};
 
 export default function NotFound() {
   return (
