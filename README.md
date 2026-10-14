@@ -28,7 +28,7 @@ Original team members:
 - Next.js (App Router) with TypeScript in strict mode
 - Tailwind CSS
 - MongoDB for task data
-- Clerk for authentication and profile management
+- Clerk for authentication and account management
 - ESLint and Prettier for code quality
 
 ## Getting Started
@@ -37,10 +37,21 @@ Original team members:
 git clone https://github.com/T-FEH/wdd430-team-project.git
 cd wdd430-team-project
 npm install
+cp .env.example .env.local
 npm run dev
 ```
 
 Then open [http://localhost:3000](http://localhost:3000).
+
+### Authentication keys
+
+TaskTrack uses [Clerk](https://clerk.com) for sign-up, sign-in, and sessions.
+
+- **Local development:** you can leave the Clerk keys in `.env.local` empty. Clerk runs in keyless mode and shows a banner where you can claim the temporary app.
+- **Your own app:** create an application in the [Clerk dashboard](https://dashboard.clerk.com), then copy `NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY` and `CLERK_SECRET_KEY` into `.env.local`.
+- **Deployment:** add the same two keys, plus `NEXT_PUBLIC_SITE_URL`, to the hosting provider's environment variables. Use production keys there.
+
+Never commit `.env.local`.
 
 ## Scripts
 
