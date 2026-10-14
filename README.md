@@ -19,6 +19,8 @@ Original team members:
 
 - **Project board:** https://github.com/users/T-FEH/projects/1
 - **Specification:** [spec.md](spec.md)
+- **Architecture and data model:** [docs/architecture.md](docs/architecture.md)
+- **Design system:** [docs/design-system.md](docs/design-system.md)
 - **Copilot instructions:** [.github/copilot-instructions.md](.github/copilot-instructions.md)
 
 ## Tech Stack
