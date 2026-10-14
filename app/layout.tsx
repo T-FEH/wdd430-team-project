@@ -47,7 +47,7 @@ export default function RootLayout({ children }: LayoutProps<'/'>) {
       signInFallbackRedirectUrl="/dashboard"
       signUpFallbackRedirectUrl="/dashboard"
       afterSignOutUrl="/"
-      appearance={{ variables: { colorPrimary: '#2563eb' } }}
+      appearance={{ variables: { colorPrimary: '#155dfc' } }}
       // Clerk's card title is the page's only h1 on /sign-in and /sign-up.
       localization={{
         signIn: { start: { title: 'Sign in to TaskTrack', titleCombined: 'Sign in to TaskTrack' } },

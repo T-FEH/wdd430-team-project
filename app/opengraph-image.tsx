@@ -16,11 +16,11 @@ export default function OpenGraphImage() {
         justifyContent: 'center',
         padding: '80px',
         background: '#f9fafb',
-        borderTop: '24px solid #2563eb',
+        borderTop: '24px solid #155dfc',
       }}
     >
       <div style={{ display: 'flex', fontSize: 96, fontWeight: 700, color: '#111827' }}>
-        Task<span style={{ color: '#2563eb' }}>Track</span>
+        Task<span style={{ color: '#155dfc' }}>Track</span>
       </div>
       <div style={{ marginTop: 24, fontSize: 40, color: '#4b5563', maxWidth: 900 }}>
         {SITE_DESCRIPTION}
